@@ -1,6 +1,6 @@
-import pymupdf.pro
+import os
 
-pymupdf.pro.unlock()
+import pymupdf.pro
 
 test_docx = "test.docx"
 test_pptx = "test.pptx"
@@ -8,6 +8,19 @@ test_xlsx = "test.xlsx"
 
 
 def main():
+    cwd = os.getcwd()
+
+    # Print added font paths
+    os.environ["PYMUPDFPRO_FONT_PATH_VERBOSE"] = "1"
+
+    pymupdf.pro.unlock(
+        # Font files are located in the `fonts` directory
+        # e.g. /path/to/fonts/SomeFont.ttf
+        fontpath=f"{cwd}/fonts",
+        # Disable automatic font path detection
+        fontpath_auto=False,
+    )
+
     print("==== Testing docx ====")
     docx = pymupdf.open(test_docx)
     docx_page = docx.load_page(0)
